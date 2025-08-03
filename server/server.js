@@ -1,11 +1,9 @@
-// import express framework to build web server
 import express from 'express';
-// import mongoose to interact with mongoDB
 import mongoose from "mongoose";
-//import cors to allow requests from different origins (e.g. frontend)
 import cors from 'cors';
-// import dotenv to load environment files
 import dotenv from 'dotenv'
+
+import JobRoutes from "./routes/jobRoutes.js";
 
 dotenv.config(); // this will load variables from .env
 
@@ -14,6 +12,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+app.use('/api/jobs', JobRoutes)
 
 app.get('/',(req, res) => {
     res.send('Job Tracker API is running');
@@ -27,7 +26,7 @@ mongoose.connect(process.env.MONGO_URI || '', {
     console.log("Connected to MongoDB");
 
     app.listen(PORT, () => {
-        console.log(`Sever is running on port ${PORT}`);
+        console.log(`Server is running on port ${PORT}`);
     })
 })
 .catch((err) => {
