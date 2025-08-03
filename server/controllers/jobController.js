@@ -1,4 +1,4 @@
-import Job from '../models/Job.js';
+import { Job }from '../models/Job.js';
 
 // GET api/jobs
 
@@ -15,10 +15,15 @@ export const getAllJobs = async (req, res) => {
 
 export const createJob = async (req,res) =>{
     try{
+        if (req.body.status){
+            req.body.status = req.body.status.toLowerCase();
+        }
+
         const newJob = new Job(req.body);
         const savedJob = await newJob.save();
         res.status(201).json(savedJob);
     } catch (err){
+        console.error("Error creating job:", err.message);
         res.status(400).json({message: 'Invalid Job Data'});
     }
 };
